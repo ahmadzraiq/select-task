@@ -1,26 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import Options from "./Options";
+export default function App() {
+  const [options, setOptions] = useState([
+    { id: 1, title: "Budget" },
+    { id: 2, title: "Food allergies" },
+    { id: 3, title: "Number of people" },
+    { id: 4, title: "Special restrictions" },
+  ]);
 
-function App() {
+  const handleClick = (option) => {
+    let _options = [...options];
+    let getOptionIndex = _options.findIndex((o) => o.id === option.id);
+    _options.splice(getOptionIndex, 1);
+    _options.splice(getOptionIndex, 0, { ...option, check: !option.check });
+    setOptions(_options);
+  };
+
+  const renderItem = (option, index) => {
+    return (
+      <div key={index} onClick={() => handleClick(option)}>
+        <Options title={option.title} check={option.check} />
+      </div>
+    );
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="select">
+      <input className="searchInput" placeholder="Search questions" />
+      <div className="separateLine" />
+      {options.map(renderItem)}
     </div>
   );
 }
-
-export default App;
